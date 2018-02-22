@@ -83,6 +83,7 @@ class asmTk:
             with open('path2sim.nga', 'r', encoding='utf-8') as file:
                 self.filename = file.read()
                 self.status.config(text='状态:已选择的simc.exe路径' + self.filename, fg='blue')
+                settings.simc_path = self.filename
         else:
             self.filename = None
             self.status.config(text='状态:未选择simc程序的路径!', fg='red')
