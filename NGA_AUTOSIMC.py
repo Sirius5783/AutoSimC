@@ -42,7 +42,7 @@ class asmTk:
                          "2个相隔27码的帕奇维克":"Two Patchwerks, 27 yards away from each other"}
         self.boss_type = tk.StringVar()
         self.boss_type.set('帕奇维克(木桩单体)')
-        tk.OptionMenu(self.root,self.boss_type,*self.boss_types,command=self.options_spe).place(x=245,y=80)
+        tk.OptionMenu(self.root,self.boss_type,*self.boss_types.keys(),command=self.options_spe).place(x=245,y=80)
 
         tk.Label(self.root, text='模拟程序运行优先级:', fg='blue').place(x=245, y=120)
         self.priorities = {'低(推荐)':'low', '中下':'below_normal', '中等':'normal', '中上':'above_normal', '最高(可能使你的系统失去响应)':'highest'}
@@ -52,9 +52,9 @@ class asmTk:
 
         tk.Label(self.root, text='最少装备T21套装数:', fg='blue').place(x=60, y=110)
         self.min_T21 = tk.IntVar()
-        self.min_T21.set(6)
-        tk.Radiobutton(self.root, text='4', variable=self.min_T21, value=4, command=self.T21_spe).place(x=180, y=100)
-        tk.Radiobutton(self.root, text='6', variable=self.min_T21, value=6, command=self.T21_spe).place(x=180, y=120)
+        self.min_T21.set(4)
+        tk.Radiobutton(self.root, text='2', variable=self.min_T21, value=2, command=self.T21_spe).place(x=180, y=100)
+        tk.Radiobutton(self.root, text='4', variable=self.min_T21, value=4, command=self.T21_spe).place(x=180, y=120)
 
         tk.Label(self.root, text='模拟模式选择:', fg='blue').place(x=60, y=150)
         self.mode = tk.IntVar()
@@ -83,6 +83,7 @@ class asmTk:
             with open('path2sim.nga', 'r', encoding='utf-8') as file:
                 self.filename = file.read()
                 self.status.config(text='状态:已选择的simc.exe路径' + self.filename, fg='blue')
+                settings.simc_path = self.filename
         else:
             self.filename = None
             self.status.config(text='状态:未选择simc程序的路径!', fg='red')
