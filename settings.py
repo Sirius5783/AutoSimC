@@ -4,13 +4,23 @@ import multiprocessing
 class settings():
     # Path to your SimulationCraft command line binary (simc.exe on Windows, or simc on linux/mac).
     # If you enable the simulation-part, you need to either set simc_path, or enable auto_download on Windows.
-    # Don´t point to the gui-executable. If a window with buttons and tabs opens, you chose the wrong executable!
+    # Dont point to the gui-executable. If a window with buttons and tabs opens, you chose the wrong executable!
     # Either use forward slashes, or >>>>SINGLE-BACKSLASH<<<< for subfolders. Do not remove the leading r'
-    simc_path ='E:/Simulationcraft(x64)/735-01/simc.exe'
+    simc_path = r'E:\Simulationcraft(x64)\801-01\simc.exe'
 
     # On Windows, AutoSimCor can automatically download the latest nightly version of SimulationCraft for you.
     # You need 7z command line utility in path to unzip for this to work.
     auto_download_simc = False
+    # Check if a newer version is available on http://downloads.simulationcraft.org/?C=M;O=D
+    # A valid path to your current simc.exe on disc has to exist, see variable above (simc_path)
+    # It is only checked if auto_download_simc is set to false
+    check_simc_version = False
+
+    # Choose the translation language used for AutoSimC. The string must look like this:
+    # eg. "de" for German language, or "de_CH" for German (Switzerland).
+    # check the "locale" folder for available translations.
+    # Default is auto, selecting the language based on your systems locale settings.
+    localization_language = "auto"
 
     # standard-input
     default_inputFileName = "input.txt"
@@ -29,7 +39,7 @@ class settings():
     # amount of valid combinations
     # You can override these settings via command-line (-min_leg and -max_leg), as described in the Readme.
     # Enter max=3 only if you want to include the new Amanthul-Trinket
-    default_leg_min = 2
+    default_leg_min = 0
     default_leg_max = 3
 
     # set the amount of tier-items you want to include in your output
@@ -77,7 +87,7 @@ class settings():
     num_stages = 3
 
     # Automatic delete of the temp folders
-    delete_temp_default = True
+    delete_temp_default = False
 
     # set to False if you want to keep intermediate files
     # moves the final .html-result into the specified subfolder before deletion
@@ -85,6 +95,11 @@ class settings():
     clean_up = True
 
     result_subfolder = "results"
+
+    # Define which metric to use to select & filter profiles.
+    # Supported: dps, hps for healers and tmi for tanks.
+    # single_actor_batch=1 seems to be bugged for tanks right now.
+    select_by_metric = "DPS"
 
     # For static mode, default iterations per stage
     # By default this is 100 for stage1, 1000 for stage2, and so on.
@@ -148,7 +163,7 @@ class settings():
     choose_fightstyle = False
     default_fightstyle = "Default_Patchwerk"
 
-    # SimulationCraft .
+    # SimulationCraft process priority.
     # This can make your system more/less responsive. We recommend leaving this at 'low'.
     # low, below_normal, normal, above_normal, highest
     simc_priority = "low"

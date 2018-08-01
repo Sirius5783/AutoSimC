@@ -188,9 +188,6 @@ class asmTk:
 if __name__ == '__main__':
 #def runn():
     print('正在初始化程序,请不要关闭这个黑色的窗口哦.')
-    for i in range(0,101):
-        print('进度:',i,'%')
-    print('初始化完成.')
     print('正在打开窗口界面,请不要关闭这个黑色的窗口哦,后面有大用')
     user = asmTk()
 

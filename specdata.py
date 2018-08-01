@@ -1,13 +1,17 @@
 import sys
 import warnings
 
+_item_acronyms = {154172: "Aman",
+                  }
+
 
 def getAcronymForID(item_id):
+    if item_id in _item_acronyms:
+        return _item_acronyms[item_id]
     # TODO: convert this to a big dict and remove all these elif ;)
-    # shared
-    if item_id == "154172":
-        return "Aman"
-    elif item_id == "133976":
+    # Please add new entries to _item_acronyms above!
+    item_id = str(item_id)
+    if item_id == "133976":
         return "Cind"
     elif item_id == "137015":
         return "Eko"
@@ -484,6 +488,7 @@ def getAcronymForID(item_id):
 def getClassSpec(c_class, c_spec):
     b_heal = False
     b_tank = False
+    class_spec = None
     if c_class == "deathknight":
         if c_spec == "frost":
             class_spec = "Frost Death Knight"
@@ -583,6 +588,8 @@ def getClassSpec(c_class, c_spec):
     else:
         raise ValueError("Unsupported class/spec-combination: " + str(c_class) + " - " + str(c_spec) + "\n")
         sys.exit(1)
+    if class_spec is None:
+        raise ValueError("Unsupported class/spec-combination: " + str(c_class) + " - " + str(c_spec) + "\n")
     if b_tank or b_heal:
         warnings.warn("You are trying to use a tank or heal-spec! Be aware that this may lead to no or incomplete "
                       "results!\n You may need to generate a new Analyzer.json using Analyzer.py which includes a "

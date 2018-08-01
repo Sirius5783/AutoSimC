@@ -6,14 +6,12 @@ Python script to create multiple profiles for SimulationCraft to find Best-in-Sl
 Don't hesitate to go on the [SimcMinMax](https://discordapp.com/invite/tFR2uvK) Discord in the #simpermut-autosimc Channel to ask about specific stuff.
 
 ## AutoSimC窗口版
-- 窗口版是为无Python环境和编程经验的中国玩家使用.
-- 支持直接把角色的字符串输入窗口中,无需修改input.txt文件,也解决了部分可能遇到的编码坑。
+- NGA特供版是为无Python环境和编程经验的NGA玩家使用.
+- 支持直接把角色的字符串输入窗口中,无需修改input.txt文件,解决部分可能遇到的编码坑。
 - 汉化了部分模拟过程中显示的英文字符串
 - 模拟结束默认删除所有产生的垃圾文件夹
-- 终端在模拟结束后需要再输入一次Enter回车才会关闭
-- 更新了一些自定义选项和更多的汉化
+- 更新了一些自定义选项和更多的汉化,支持魔兽世界7.35版本
 - 详情查看[NGA](https://bbs.nga.cn/read.php?tid=13391684)
-
 
 ## How does it work ?
 AutoSimC works in two parts:
@@ -21,11 +19,12 @@ AutoSimC works in two parts:
 2. Simulating the generated profiles in a multi-stage process: To narrow the large amount of generated profiles into a small set of best performing profiles, a multi-stage simulation process is performed, in which each stage simulates the given profiles with increased accuracy to narrow the number of profiles in each stage, resulting in only a handful of final profiles with the best DPS.
 
 ## Quick setup
-Python (>=3.4) is required for this to work.
+Python (>=3.5) is required for this to work.
 - You can download python at https://www.python.org/downloads/. During installation, select *Add Python 3.x to PATH*, so that python gets automatically added to your PATH environment variable.
 - Download the project and extract it.
 - Open [input.txt](#inputtxt) and enter parameters depending on your character. Make sure your text editor encodes input.txt as UTF-8.
-- Either install 7zip for auto download of nightly SimulationCraft, or edit settings.py to set auto_download_simc=False and set the simc_path.
+- Either install 7zip for auto download of nightly SimulationCraft (Windows only), or edit settings.py to set auto_download_simc=False and set the simc_path.
+- If using **Ubuntu**, read [here](#ubuntu) to use the auto-download script.
 - Edit [settings.py](settingspy) for additional parameters (e.g. #legendaries, iterations, threads, fightstyle etc.)
 - Run launch.bat or run 'python main.py' directly. See [below](#command-line-interface) for detailed options.
 - You can use the -sim option to simulate directly with AutoSimC. Or you can feed to generated output .simc file into SimulationCraft yourself.
@@ -134,19 +133,19 @@ Python (>=3.4) is required for this to work.
 Follow the example that is downloaded and modify it with your own character.
 
 For the gear part, simply copy the gear part of the SimulationCraft addon. If you want to test different gear, add the simulationcraft string of the gear separated with a pipe ( the caracter " | ").
-Example : 
+Example :
 
     neck=,id=130234,enchant_id=5890,bonus_id=1762/689/600/670,gem_id=130220|,id=134529,enchant_id=5890,bonus_id=3413/1808/1507/3336,gem_id=130220
 
 To specify Tier set and item names, use the following syntax:
 
     neck=T21--chain_of_the_unmaker,id=152283,enchant_id=5890
-    
+
 To specify a legendary, use the following syntax:
 
     waist=L--Mangazas_Madness,id=132864,bonus_id=1811/3630
-    
-(item name is not necessary)  
+
+(item name is not necessary)
 
 You can also use [SimPermut](#simpermut-complementarity) to generate the string directly with the gear you have equipped and in your bag.
 
@@ -169,7 +168,7 @@ You can/have to finetune your settings in the settings.py file:
 - and several more
 
 For developers/power users:
-- You can add a copy of settings.py named settings_local.py to provide overrides for you local settings. 
+- You can add a copy of settings.py named settings_local.py to provide overrides for you local settings.
   Since this file is not part of AutoSimc source, it will not be overridden/commited when pulling/pushing to
   the AutoSimC remote repository.
   For now, please ensure that your local copy stays in sync with settings.py whenever new options are added/renamed.
@@ -179,9 +178,9 @@ Included is Analyzer.py, which uses the standard-simc-profiles for each class to
  It is used in the main-program to show the approximate calculation times, therefore it is only needed to be recalculated at major WoW- and Simcraft-updates, e.g. 7.2.5, and if you want to sim your tank- or healspec. Edit the Analysis.py accordingly.
 
  Modules needed: marshmallow (pip install marshmallow) for generating json-files easier
- 
+
 ## Fight-Type Selector:
-In fight_types.json you can define your personal fight_types.
+In fight_types.json you can define your personal fight_types. In settings.py you must select the desired fight style in the option *default_fightstyle*.
 The standard simc-profiles are already included, it is advised not to touch these.
 
 If you want to expand them, e.g. simulate two Patchwerks in cleave-range, simply add a block with the commands you would normally add to additional_input.txt. Use the syntax given in the two examples.
@@ -197,6 +196,17 @@ Just copy the text you get in SimPermut and paste it in your input.txt file (era
 ## Known issues and developement plan
 - Bugfixing and expanding simulation-options
 
+## Ubuntu
+- AutoSimC comes with a simple bash script to help you automatically download and install the latest version of SimC.
+- The script will also automatically run AutoSimC after it installs SimC.
+- Simply run `sh launch-ubuntu.sh` and it will guide you through a few prompts for installation.
+- Optionally:  You can pass in your own 'input.txt' (named whatever you want) to use in the script. (`sh launch-ubuntu.sh my-class-input.txt`)
+- This will create a `settings_local.py` file in your AutoSimC folder which will have the correct 'path' to your simc executable.  Note:  This file is made from a copy of your `settings.py`.  If you install simc again, it will be overwritten by your `setting.py` file.
+- If you do not have the required dependencies, you will need to run the script as root or install them yourself (`build-essential` `libssl-dev`)
+- The script assumes that your python 3.4 executable is called `python3`.  If this is not the case, please edit to use the correct value in your `PATH`.
+- SimulationCraft requires you to compile the source code yourself, This script will do this for you but it may take some time. Run the compilation each time you want to update your executable.
+- The script will NOT inform you when its time to update.  Simply check the commit hash in the folder name against the simc repo.
+
 ## Frequently Asked Questions
 1. I get an error message *RuntimeError: AutoSimC could not decode your input file 'input.txt' with encoding 'utf-8'.*
 
@@ -210,23 +220,32 @@ Just copy the text you get in SimPermut and paste it in your input.txt file (era
 
 1. How can I simulate multiple enemy targets?
 
-   Basic: Check 'additional_input.txt' to provide additional simulation options. You can adust the *desired_targets* option.
-   Advanced: You can edit fight_types.json to generate your own database of fights. If using this option, leave additional_input.txt empty as it gets overwritten during the process.
-  
+   See [Fight-Type Selector](#fight-type-selector) for detailed instructions on how to select different fight types, including simulating against multiple enemies.
+
 1. Simulation crashed/stoped at stage x. How can I restart AutoSimC at stage x, without redoing all the previous work?
 
    Start AutoSimC with the argument *-sim stagex*. If you use launch.bat, edit it and adjust the -sim argument in there.
    This will resume AutoSimC at stage x, assuming all previous results are ok and you did not clean up the temp folder.
-   
+
 1. I get an error message *ModuleNotFoundError: No module named 'settings'*
 
    That means you have no settings.py file. Rename settings.template.py to settings.py.
-   
+
 1. How can I get back the target error selection dialog for each stage?
 
    In settings.py, remove the default_target_error for a given stage and you will be prompted for a target error selection for that stage, assuming skip_questions is False.
-   
-  
+
+## Localization
+
+AutoSimC has experimental support for localization/translation using the [gettext](https://docs.python.org/3/library/gettext.html) module. You can improve or extend our translation efforts even as a non-programmer.
+
+- All string to be translated in the source code need to be enclose in \_(). So "Hello World" becomes \_("Hello World").
+- All strings marked with \_() are extracted by the pygettext script. Run *update_language_file.py* to update the extracted language file *AutoSimC.pot* with any changes done in the source code.
+- To edit & create new translations, we recommend a graphical PO editor, like [Poedit](https://poedit.net/).
+- A new translation for a language needs to go in a specific folder following the scheme, eg. for language "de":          ```./locale/de/LC_MESSAGES/AutoSimC.mo
+  ./locale/de/LC_MESSAGES/AutoSimC.po```
+- To update a existing translation *.po* file from a updated *AutoSimc.pot* file, in [Poedit](https://poedit.net/) select *Catalog -> Update from POT file*.
+- In settings.py there is a option *localization_language* to control the language to which AutoSimC is translated. Default is "auto", selecting the language based on your system setting.
 
 ## Changelog
 
