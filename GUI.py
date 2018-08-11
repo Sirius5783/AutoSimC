@@ -26,7 +26,7 @@ class GraphicInterface:
                     self.stringInput()
                 else:
                     os.remove('path.nga')
-                    os.popen("python GUI.py")
+                    os.popen("AutoSimc-master-NGA特供版811.exe")
                     quit()
         else:
             self.root = tk.Tk()
@@ -63,7 +63,7 @@ class GraphicInterface:
         接收用户输入角色字符串
         '''
         self.root = tk.Tk()
-        self.root.title('AutoSimC-master-NGA')
+        self.root.title('AutoSimC-master-NGA 08/11')
         self.root.geometry('480x740+635+120')
 
         # canvas = Canvas(self.root, width=490, height=740)
@@ -149,4 +149,8 @@ class GraphicInterface:
 
 if __name__ == '__main__':
     print('请不要关闭这个黑色的窗口')
-    user = GraphicInterface()
+    try:
+        user = GraphicInterface()
+    except Exception as e:
+        with open("GUIERROR.txt","w") as file:
+            file.write(str(e))
